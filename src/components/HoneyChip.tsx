@@ -1,9 +1,14 @@
+import {Link} from "@nextui-org/react";
+import {formatAddress, getAddressLink, isAddress} from "../utils.ts";
+
 interface HoneyChipProps {
     label: string;
-    value: string | string[] | Date;
+    value: string | string[] | Date
 }
 
-export const HoneyChip = ({ label, value }: HoneyChipProps) => {
+export const HoneyChip = ({label, value}: HoneyChipProps) => {
+
+
     return (
         <div>
             <div className='flex flex-col px-2 py-1 rounded-2xl'>
@@ -15,7 +20,16 @@ export const HoneyChip = ({ label, value }: HoneyChipProps) => {
                         })}
                     </p>
                 ) : (
-                    <p className='text-lg'>{value instanceof Date ? value.toLocaleDateString() : value}</p>
+                    value instanceof Date
+                        ? <p className='text-lg'>
+                            {value.toLocaleDateString()}
+                        </p>
+                        : isAddress(value)
+                            ? <Link href={getAddressLink(value)}
+                                    showAnchorIcon>
+                                {formatAddress(value)}
+                            </Link>
+                            : <p className='text-lg'>{value}</p>
                 )}
             </div>
         </div>
